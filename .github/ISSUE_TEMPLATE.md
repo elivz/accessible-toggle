@@ -1,7 +1,5 @@
 **Do you want to request a feature or report a bug?**
 
-<!-- Ask usage questions on StackOverflow, questions will be closed. -->
-
 **Feature:**
 
 **If this is a feature request, what is motivation or use case for changing the behavior?**:
