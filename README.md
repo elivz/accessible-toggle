@@ -1,5 +1,7 @@
 # accessible-toggle
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/elivz/accessible-toggle.svg)](https://greenkeeper.io/)
+
 ![Node](https://img.shields.io/node/v/accessible-toggle.svg?style=flat-square)
 [![NPM](https://img.shields.io/npm/v/accessible-toggle.svg?style=flat-square)](https://www.npmjs.com/package/accessible-toggle)
 [![David](https://img.shields.io/david/elivz/accessible-toggle.svg?style=flat-square)](https://david-dm.org/elivz/accessible-toggle)
