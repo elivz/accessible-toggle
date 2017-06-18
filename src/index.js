@@ -6,6 +6,7 @@
 const defaultOptions = {
   assignFocus: true,
   mediaQuery: false,
+  closeOnEsc: true,
 };
 
 export default class AccessibleToggle {
@@ -46,7 +47,7 @@ export default class AccessibleToggle {
       this.setup();
     } else {
       // Check if it should be setup now, and again every time the window is resized
-      this.onResize(this.testMediaQuery.bind(this));
+      this._onResize(this.testMediaQuery.bind(this));
       this.testMediaQuery();
     }
   }
@@ -59,6 +60,7 @@ export default class AccessibleToggle {
   setup() {
     if (!this.active) {
       this.toggleHandler = this.toggle.bind(this);
+      this.keyupHandler = this.keyup.bind(this);
 
       // Button properties
       this.buttons.forEach((button, index) => {
@@ -71,6 +73,9 @@ export default class AccessibleToggle {
       // Toggleable content properties
       this.content.setAttribute(`aria-hidden`, `true`);
       this.content.setAttribute(`aria-labelledby`, `${this.id}-control-0`);
+      if (this.options.closeOnEsc) {
+        this.content.addEventListener(`keyup`, this.keyupHandler);
+      }
     }
 
     this.active = true;
@@ -95,11 +100,17 @@ export default class AccessibleToggle {
       // Toggleable content properties
       this.content.removeAttribute(`aria-hidden`);
       this.content.removeAttribute(`aria-labelledby`);
+      this.content.removeEventListener(`keyup`, this.keyupHandler);
 
       this.active = false;
     }
   }
 
+  /**
+   * Toggles the script on and off based on a media query
+   *
+   * @return {null}
+   */
   testMediaQuery() {
     if (window.matchMedia(this.options.mediaQuery).matches) {
       this.setup();
@@ -136,6 +147,14 @@ export default class AccessibleToggle {
     }
   }
 
+  keyup(event) {
+    // Is ESC key?
+    if (event.which === 27 || event.keyCode === 27) {
+      this.toggle(event);
+      this.buttons[0].focus();
+    }
+  }
+
   /**
    * Debounced resize handler
    * https://github.com/louisremi/jquery-smartresize
@@ -143,9 +162,9 @@ export default class AccessibleToggle {
    * @param  {Function} callback  Function to run after window is resized
    * @return {null}
    */
-  onResize(callback) {
+  _onResize(callback) {
     let timer;
-    onresize = function() {
+    () => {
       clearTimeout(timer);
       timer = setTimeout(callback, 100);
     };
