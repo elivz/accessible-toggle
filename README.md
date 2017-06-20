@@ -44,15 +44,25 @@ or npm
 
 You can pass in extra options as a configuration object. The following options are supported:
 
-#### `assignFocus`: Set this to true if you want to automatically move focus to the first link or button within the content after is is shown. (Default: `false`)
+#### `assignFocus`
 
-#### `closeOnEsc`: Allow the user to press the escape key to hide the content. (Default: `true`)
+Set this to true if you want to automatically move focus to the first link or button within the content after is is shown. (Default: `false`)
 
-#### `mediaQuery`: If you set a media query (using [standard CSS syntax](https://developer.mozilla.org/en-US/docs/Web/CSS/Media_Queries/Using_media_queries)) the script will be enabled or disabled automatically depending on whether the query matches or not. This is most useful for elements that should be toggleable at certain screen sizes but always visible at others. (Default: none)
+#### `closeOnEsc`
 
-#### `onShow`: A callback function that will be triggered when the content is displayed. You may alternately register an event listener for this purpose – see below. (Default: none)
+Allow the user to press the escape key to hide the content. (Default: `true`)
 
-#### `onHide`: A callback function that will be triggered when the content is hidden. You may alternately register an event listener for this purpose – see below. (Default: none)
+#### `mediaQuery`
+
+If you set a media query (using [standard CSS syntax](https://developer.mozilla.org/en-US/docs/Web/CSS/Media_Queries/Using_media_queries)) the script will be enabled or disabled automatically depending on whether the query matches or not. This is most useful for elements that should be toggleable at certain screen sizes but always visible at others. (Default: none)
+
+#### `onShow`
+
+A callback function that will be triggered when the content is displayed. You may alternately register an event listener for this purpose – see below. (Default: none)
+
+#### `onHide`
+
+A callback function that will be triggered when the content is hidden. You may alternately register an event listener for this purpose – see below. (Default: none)
 
 ### Methods
 
@@ -85,9 +95,13 @@ toggle.toggle();
 
 You may  listen for the following custom events on the content element.
 
-#### `toggle-show`: Is triggered when the content is switched to its visible state.
+#### `toggle-show`
 
-#### `toggle-hide`: Is triggered when the content is switched to its hidden state.
+Triggered when the content is switched to its visible state.
+
+#### `toggle-hide`
+
+Triggered when the content is switched to its hidden state.
 
 ### Example
 
