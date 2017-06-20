@@ -4,9 +4,9 @@
  * @type {Object}
  */
 const defaultOptions = {
-  assignFocus: true,
-  mediaQuery: false,
+  assignFocus: false,
   closeOnEsc: true,
+  mediaQuery: false,
 };
 
 export default class AccessibleToggle {
@@ -59,22 +59,27 @@ export default class AccessibleToggle {
    */
   setup() {
     if (!this.active) {
-      this.toggleHandler = this.toggle.bind(this);
-      this.keyupHandler = this.keyup.bind(this);
+      this.boundClickHandler = this.clickHandler.bind(this);
+      this.boundKeyupHandler = this.keyupHandler.bind(this);
+
+      // Toggleable content properties
+      this.content.setAttribute(`aria-labelledby`, `${this.id}-control-0`);
+      if (this.options.closeOnEsc) {
+        this.content.addEventListener(`keyup`, this.boundKeyupHandler);
+      }
 
       // Button properties
       this.buttons.forEach((button, index) => {
-        button.setAttribute(`aria-expanded`, `false`);
         button.setAttribute(`aria-controls`, this.id);
         button.setAttribute(`id`, `${this.id}-control-${index}`);
-        button.addEventListener(`click`, this.toggleHandler);
+        button.addEventListener(`click`, this.boundClickHandler);
+        button.addEventListener(`keyup`, this.boundKeyupHandler);
       });
 
-      // Toggleable content properties
-      this.content.setAttribute(`aria-hidden`, `true`);
-      this.content.setAttribute(`aria-labelledby`, `${this.id}-control-0`);
-      if (this.options.closeOnEsc) {
-        this.content.addEventListener(`keyup`, this.keyupHandler);
+      if (this.content.getAttribute(`data-toggle-open`)) {
+        this.show();
+      } else {
+        this.hide();
       }
     }
 
@@ -94,13 +99,13 @@ export default class AccessibleToggle {
         button.removeAttribute(`aria-expanded`);
         button.removeAttribute(`aria-controls`);
         button.removeAttribute(`id`);
-        button.removeEventListener(`click`, this.toggleHandler);
+        button.removeEventListener(`click`, this.boundClickHandler);
       });
 
       // Toggleable content properties
       this.content.removeAttribute(`aria-hidden`);
       this.content.removeAttribute(`aria-labelledby`);
-      this.content.removeEventListener(`keyup`, this.keyupHandler);
+      this.content.removeEventListener(`keyup`, this.boundKeyupHandler);
 
       this.active = false;
     }
@@ -112,7 +117,10 @@ export default class AccessibleToggle {
    * @return {null}
    */
   testMediaQuery() {
-    if (window.matchMedia(this.options.mediaQuery).matches) {
+    if (
+      this.options.mediaQuery &&
+      window.matchMedia(this.options.mediaQuery).matches
+    ) {
       this.setup();
     } else {
       this.teardown();
@@ -120,37 +128,78 @@ export default class AccessibleToggle {
   }
 
   /**
-   * Toggles visibility and ARIA roles
+   * Show the content
    *
-   * @return {null}
+   * @return {class}  The accessible-toggle class
    */
-  toggle(event) {
-    event.preventDefault();
+  show() {
+    this.content.setAttribute(`aria-hidden`, `false`);
+    this.buttons.forEach(button => {
+      button.setAttribute(`aria-expanded`, `true`);
+    });
 
-    if (this.content.getAttribute(`aria-hidden`) === `true`) {
-      // Show
-      this.content.setAttribute(`aria-hidden`, `false`);
-      this.buttons.forEach(button => {
-        button.setAttribute(`aria-expanded`, `true`);
-      });
-
-      // Set focus on first link
-      if (this.options.assignFocus && this.firstFocusable) {
-        this.firstFocusable.focus();
-      }
-    } else {
-      // Hide
-      this.content.setAttribute(`aria-hidden`, `true`);
-      this.buttons.forEach(button => {
-        button.setAttribute(`aria-expanded`, `false`);
-      });
+    // Set focus on first link
+    if (this.options.assignFocus && this.firstFocusable) {
+      this.firstFocusable.focus();
     }
+
+    return this;
   }
 
-  keyup(event) {
+  /**
+   * Hide the content
+   *
+   * @return {class}  The accessible-toggle class
+   */
+  hide() {
+    this.content.setAttribute(`aria-hidden`, `true`);
+    this.buttons.forEach(button => {
+      button.setAttribute(`aria-expanded`, `false`);
+    });
+
+    return this;
+  }
+
+  /**
+   * Toggles visibility and ARIA roles
+   *
+   * @return {class}  The accessible-toggle class
+   */
+  toggle() {
+    if (this.content.getAttribute(`aria-hidden`) === `true`) {
+      this.show();
+    } else {
+      this.hide();
+    }
+
+    return this;
+  }
+
+  /**
+   * Handle clicks on the button element
+   *
+   * @param  {event}
+   * @return {null}
+   */
+  clickHandler(event) {
+    this.toggle();
+    event.preventDefault();
+  }
+
+  /**
+   * Handle keypresses within the content element
+   *
+   * @param  {event}
+   * @return {null}
+   */
+  keyupHandler(event) {
     // Is ESC key?
-    if (event.which === 27 || event.keyCode === 27) {
-      this.toggle(event);
+    if (
+      this.options.closeOnEsc &&
+      (event.which === 27 || event.keyCode === 27)
+    ) {
+      event.preventDefault();
+      this.hide();
       this.buttons[0].focus();
     }
   }
