@@ -1,56 +1,81 @@
-# accessible-toggle
+# Accessible Toggle
 
 ![Node](https://img.shields.io/node/v/accessible-toggle.svg?style=flat-square)
 [![NPM](https://img.shields.io/npm/v/accessible-toggle.svg?style=flat-square)](https://www.npmjs.com/package/accessible-toggle)
 [![David](https://img.shields.io/david/elivz/accessible-toggle.svg?style=flat-square)](https://david-dm.org/elivz/accessible-toggle)
 
-> Accessible and responsive toggling of an element&#39;s visibility
+> Accessible and responsive toggling of an element's visibility. Supports a `media-query` option, which will enable or disable the toggle based on screen size (e.g. for "hamburger menus" that should only be toggleable on small screens).
 
 ### Usage
+
+Initialize Accessible Toggle with the *content* element as the first argument. You may also pass in an optional second argument: an object containing the configuration options ([see below](#configuration)).
 
 ```js
 import accessibleToggle from 'accessible-toggle';
 
+const toggle = new Toggle(document.getElementById('navigation'), {
+  mediaQuery: '(max-width: 600px)',
+});
 ```
+
+#### Suggested CSS
+
+By itself, this script will only toggle the appropriate ARIA roles, which won't cause any visual change. You need to include the following CSS somewhere in your stylesheet to make the element actually disappear and appear.
+
+```css
+[aria-hidden="true"] {
+  display: none;
+}
+```
+
+Of course you can also implement your own styles to provide transition effects, etc.
 
 ### Installation
 
 Install via [yarn](https://github.com/yarnpkg/yarn)
 
-	yarn add accessible-toggle (--dev)
+  yarn add accessible-toggle (--dev)
 
 or npm
 
-	npm install accessible-toggle (--save-dev)
+  npm install accessible-toggle (--save-dev)
 
+### Configuration
 
-### configuration
+You can pass in extra options as a configuration object. The following options are supported:
 
-You can pass in extra options as a configuration object (➕ required, ➖ optional, ✏️ default).
+#### `assignFocus`: Set this to true if you want to automatically move focus to the first link or button within the content after is is shown. (Default: `false`)
 
-```js
-import accessibleToggle from 'accessible-toggle';
+#### `closeOnEsc`: Allow the user to press the escape key to hide the content. (Default: `true`)
 
-```
+#### `mediaQuery`: If you set a media query (using [standard CSS syntax](https://developer.mozilla.org/en-US/docs/Web/CSS/Media_Queries/Using_media_queries)) the script will be enabled or disabled automatically depending on whether the query matches or not. This is most useful for elements that should be toggleable at certain screen sizes but always visible at others. (Default: none)
 
-➖ **property** ( type ) ` ✏️ default `
-<br/> 📝 description
-<br/> ❗️ warning
-<br/> ℹ️ info
-<br/> 💡 example
+### Methods
 
-### methods
+#### `show`
 
-#### #name
+Show the content programatically.
 
 ```js
-accessibleToggle
-
+const toggle = new Toggle(document.getElementById('navigation'));
+toggle.show();
 ```
 
-### Examples
+#### `hide`
 
-See [`example`](example/script.js) folder or the [runkit](https://runkit.com/elivz/accessible-toggle) example.
+Hide the content programatically.
+
+```js
+toggle.hide();
+```
+
+#### `toggle`
+
+Toggle the content between hidden and visible.
+
+```js
+toggle.toggle();
+```
 
 ### Builds
 
@@ -69,6 +94,8 @@ The code is available under the [MIT](LICENSE) license.
 
 We are open to contributions, see [CONTRIBUTING.md](CONTRIBUTING.md) for more info.
 
-### Misc
+### Thanks
 
-This module was created using [generator-module-boilerplate](https://github.com/duivvv/generator-module-boilerplate).
+This script was inspired by [A11y Toggle](https://github.com/edenspiekermann/a11y-toggle).
+
+The project structure was created using [generator-module-boilerplate](https://github.com/duivvv/generator-module-boilerplate).
