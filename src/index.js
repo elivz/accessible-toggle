@@ -7,6 +7,8 @@ const defaultOptions = {
   assignFocus: false,
   closeOnEsc: true,
   mediaQuery: false,
+  onShow: () => {},
+  onHide: () => {},
 };
 
 export default class AccessibleToggle {
@@ -143,6 +145,15 @@ export default class AccessibleToggle {
       this.firstFocusable.focus();
     }
 
+    // Trigger callback
+    if (typeof this.options.onShow === `function`) {
+      this.options.onShow();
+    }
+
+    // Fire custom event
+    const event = new Event(`toggle-show`);
+    this.content.dispatchEvent(event);
+
     return this;
   }
 
@@ -156,6 +167,15 @@ export default class AccessibleToggle {
     this.buttons.forEach(button => {
       button.setAttribute(`aria-expanded`, `false`);
     });
+
+    // Trigger callback
+    if (typeof this.options.onShow === `function`) {
+      this.options.onHide();
+    }
+
+    // Fire custom event
+    const event = new Event(`toggle-hide`);
+    this.content.dispatchEvent(event);
 
     return this;
   }
