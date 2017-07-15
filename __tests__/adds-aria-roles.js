@@ -2,10 +2,11 @@
 
 test(`adds aria roles`, () => {
   // Set up our document body
-  document.body.innerHTML = `<button id="button" data-toggle="content"></button>
+  document.body.innerHTML = `
+    <button id="button" data-toggle="content"></button>
     <div id="content"></div>`;
 
-  const AccessibleToggle = require(`../dist/accessibleToggle`);
+  const AccessibleToggle = require(`../src/index`);
 
   // Store references to the two elements
   const button = document.getElementById(`button`);
