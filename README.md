@@ -3,8 +3,9 @@
 [![NPM](https://img.shields.io/npm/v/accessible-toggle.svg?style=flat-square)](https://www.npmjs.com/package/accessible-toggle)
 [![Travis](https://img.shields.io/travis/elivz/accessible-toggle/master.svg?style=flat-square)](https://travis-ci.org/elivz/accessible-toggle)
 [![David](https://img.shields.io/david/elivz/accessible-toggle.svg?style=flat-square)](https://david-dm.org/elivz/accessible-toggle)
+[![Greenkeeper badge](https://badges.greenkeeper.io/elivz/accessible-toggle.svg)](https://greenkeeper.io/)
 
-> Accessible and responsive toggling of an element's visibility. Supports a `media-query` option, which will enable or disable the toggle based on screen size (e.g. for "hamburger menus" that should only be toggleable on small screens).
+> Accessible and responsive toggling of an element's visibility. Supports a `media-query` option, which will enable or disable the toggle based on screen size (e.g. for "hamburger" menus that should only be toggleable on small screens).
 
 ### Usage
 
