@@ -183,10 +183,16 @@ export default class AccessibleToggle {
   /**
    * Toggles visibility and ARIA roles
    *
+   * @param  {bool}   display   True to show the content, false to hide it
    * @return {class}  The accessible-toggle class
    */
-  toggle() {
-    if (this.content.getAttribute(`aria-hidden`) === `true`) {
+  toggle(display) {
+    if (typeof display === `undefined`) {
+      display = this.content.getAttribute(`aria-hidden`) === `true`;
+      console.log(display);
+    }
+
+    if (display) {
       this.show();
     } else {
       this.hide();

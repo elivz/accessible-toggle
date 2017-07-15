@@ -34,11 +34,11 @@ Of course you can also implement your own styles to provide transition effects, 
 
 Install via [yarn](https://github.com/yarnpkg/yarn)
 
-  yarn add accessible-toggle (--dev)
+  yarn add accessible-toggle
 
 or npm
 
-  npm install accessible-toggle (--save-dev)
+  npm install accessible-toggle
 
 ### Configuration
 
@@ -66,7 +66,7 @@ A callback function that will be triggered when the content is hidden. You may a
 
 ### Methods
 
-#### `show`
+#### `show()`
 
 Show the content programatically.
 
@@ -75,7 +75,7 @@ const toggle = new Toggle(document.getElementById('navigation'));
 toggle.show();
 ```
 
-#### `hide`
+#### `hide()`
 
 Hide the content programatically.
 
@@ -83,9 +83,9 @@ Hide the content programatically.
 toggle.hide();
 ```
 
-#### `toggle`
+#### `toggle([display])`
 
-Toggle the content between hidden and visible.
+Toggle the content between hidden and visible. You may optionally pass `true` or `false` to the function to force the content to be shown or hidden.
 
 ```js
 toggle.toggle();

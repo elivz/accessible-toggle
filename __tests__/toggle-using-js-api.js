@@ -1,36 +1,46 @@
 `use strict`;
 
-test(`toggle using js api`, () => {
-  // Set up our document body
-  document.body.innerHTML = `
-    <button id="button" data-toggle="content"></button>
-    <div id="content">
-      <a href="#" id="button2" data-toggle="content"></a>
-    </div>`;
+// Set up our document body
+document.body.innerHTML = `
+  <button id="button" data-toggle="content"></button>
+  <div id="content">
+    <a href="#" id="button2" data-toggle="content"></a>
+  </div>`;
 
-  const AccessibleToggle = require(`../src/index`);
+const AccessibleToggle = require(`../src/index`);
 
-  // Store references to the two elements
-  const content = document.getElementById(`content`);
+// Store references to the two elements
+const content = document.getElementById(`content`);
 
-  // Initialize the toggle script
-  const toggle = new AccessibleToggle(content);
+// Initialize the toggle script
+const toggle = new AccessibleToggle(content);
 
+test(`toggle() using js api`, () => {
   // Toggle the content
   toggle.toggle();
-
-  // Check that all the attributes have been set
   expect(content.getAttribute(`aria-hidden`)).toEqual(`false`);
+});
 
+test(`hide() using js api`, () => {
   // Hide the content
   toggle.hide();
-
-  // Check that all the attributes have been set
   expect(content.getAttribute(`aria-hidden`)).toEqual(`true`);
+});
 
+test(`show() using js api`, () => {
   // Show the content
   toggle.show();
+  expect(content.getAttribute(`aria-hidden`)).toEqual(`false`);
+});
 
-  // Check that all the attributes have been set
+test(`toggle(false) using js api`, () => {
+  // Toggle the content
+  toggle.toggle(false);
+  expect(content.getAttribute(`aria-hidden`)).toEqual(`true`);
+});
+
+test(`toggle(true) using js api`, () => {
+  // Toggle the content
+  toggle.toggle(true);
   expect(content.getAttribute(`aria-hidden`)).toEqual(`false`);
 });
