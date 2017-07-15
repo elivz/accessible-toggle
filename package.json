@@ -1,6 +1,6 @@
 {
   "name": "accessible-toggle",
-  "version": "0.5.0",
+  "version": "1.0.0",
   "description": "Accessible and responsive toggling of an element's visibility",
   "main": "cjs/index.js",
   "browser": "dist/accessibleToggle.js",
