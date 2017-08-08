@@ -1,3 +1,5 @@
+import throttle from 'frame-throttle';
+
 /**
  * Defaults for the user-configurable options
  *
@@ -28,7 +30,7 @@ export default class AccessibleToggle {
 
     this.content = element;
     this.id = element.id;
-    this.buttons = Array.from(
+    this.buttons = Array.prototype.slice.call(
       document.querySelectorAll(`[data-toggle='${this.id}']`)
     );
     this.firstFocusable = element.querySelector(
@@ -49,8 +51,8 @@ export default class AccessibleToggle {
       this.setup();
     } else {
       // Check if it should be setup now, and again every time the window is resized
-      this._onResize(this.testMediaQuery.bind(this));
       this.testMediaQuery();
+      window.addEventListener(`resize`, throttle.throttle(this.testMediaQuery));
     }
   }
 
@@ -228,20 +230,5 @@ export default class AccessibleToggle {
       this.hide();
       this.buttons[0].focus();
     }
-  }
-
-  /**
-   * Debounced resize handler
-   * https://github.com/louisremi/jquery-smartresize
-   *
-   * @param  {Function} callback  Function to run after window is resized
-   * @return {null}
-   */
-  _onResize(callback) {
-    let timer;
-    () => {
-      clearTimeout(timer);
-      timer = setTimeout(callback, 100);
-    };
   }
 }
