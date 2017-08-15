@@ -52,7 +52,10 @@ export default class AccessibleToggle {
     } else {
       // Check if it should be setup now, and again every time the window is resized
       this.testMediaQuery();
-      window.addEventListener(`resize`, throttle.throttle(this.testMediaQuery));
+      window.addEventListener(
+        `resize`,
+        throttle.throttle(this.testMediaQuery.bind(this))
+      );
     }
   }
 
