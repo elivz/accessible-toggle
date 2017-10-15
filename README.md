@@ -19,6 +19,15 @@ const toggle = new Toggle(document.getElementById('navigation'), {
 });
 ```
 
+The toggle *controls* should have a `data-toggle` attribute, set to the value of the content element's ID.
+
+```html
+<button data-toggle="navigation">Menu</button>
+<nav id="navigation">
+  ...
+</nav>
+```
+
 #### Suggested CSS
 
 By itself, this script will only toggle the appropriate ARIA roles, which won't cause any visual change. You need to include the following CSS somewhere in your stylesheet to make the element actually disappear and appear.
