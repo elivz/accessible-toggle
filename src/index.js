@@ -1,4 +1,4 @@
-import throttle from 'frame-throttle';
+import throttle from 'raf-throttle';
 
 /**
  * Defaults for the user-configurable options
@@ -54,7 +54,7 @@ export default class AccessibleToggle {
       this.testMediaQuery();
       window.addEventListener(
         `resize`,
-        throttle.throttle(this.testMediaQuery.bind(this))
+        throttle(this.testMediaQuery.bind(this))
       );
     }
   }
