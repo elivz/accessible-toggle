@@ -36,7 +36,7 @@ export default class AccessibleToggle {
     this.firstFocusable = element.querySelector(
       `a[href], input:not([disabled]), button:not([disabled]), [tabindex]`
     );
-    this.options = Object.assign(defaultOptions, options);
+    this.options = Object.assign({}, defaultOptions, options);
 
     if (this.buttons.length < 1) {
       console.warn(
