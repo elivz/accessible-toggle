@@ -3,4 +3,8 @@ cjs
 dist
 node_modules
 coverage
+.DS_Store
 *.log
+*.code-workspace
+*.sublime-workspace
+*.sublime-project

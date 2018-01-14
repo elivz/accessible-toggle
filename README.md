@@ -9,7 +9,7 @@
 
 ### Usage
 
-Initialize Accessible Toggle with the *content* element as the first argument. You may also pass in an optional second argument: an object containing the configuration options ([see below](#configuration)).
+Initialize Accessible Toggle with the _content_ element as the first argument. You may also pass in an optional second argument: an object containing the configuration options ([see below](#configuration)).
 
 ```js
 import accessibleToggle from 'accessible-toggle';
@@ -19,7 +19,7 @@ const toggle = new Toggle(document.getElementById('navigation'), {
 });
 ```
 
-The toggle *controls* should have a `data-toggle` attribute, set to the value of the content element's ID.
+The toggle _controls_ should have a `data-toggle` attribute, set to the value of the content element's ID.
 
 ```html
 <button data-toggle="navigation">Menu</button>
@@ -33,7 +33,7 @@ The toggle *controls* should have a `data-toggle` attribute, set to the value of
 By itself, this script will only toggle the appropriate ARIA roles, which won't cause any visual change. You need to include the following CSS somewhere in your stylesheet to make the element actually disappear and appear.
 
 ```css
-[aria-hidden="true"] {
+[aria-hidden='true'] {
   display: none;
 }
 ```
@@ -44,19 +44,23 @@ Of course you can also implement your own styles to provide transition effects, 
 
 Install via [yarn](https://github.com/yarnpkg/yarn)
 
-  yarn add accessible-toggle
+yarn add accessible-toggle
 
 or npm
 
-  npm install accessible-toggle
+npm install accessible-toggle
 
 ### Configuration
 
 You can pass in extra options as a configuration object. The following options are supported:
 
+#### `trapFocus`
+
+When the panel is open, prevent the user from tabbing out of it. (Default: `true`)
+
 #### `assignFocus`
 
-Set this to true if you want to automatically move focus to the first link or button within the content after is is shown. (Default: `false`)
+Set this to true if you want to automatically move focus to the first link or button within the content after is is shown. (Default: `true`)
 
 #### `closeOnEsc`
 
@@ -103,7 +107,7 @@ toggle.toggle();
 
 ### Events
 
-You may  listen for the following custom events on the content element.
+You may listen for the following custom events on the content element.
 
 #### `toggle-show`
 
