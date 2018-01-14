@@ -98,18 +98,16 @@ export default class AccessibleToggle {
       this.boundClickHandler = this.clickHandler.bind(this);
       this.boundKeypressHandler = this.keypressHandler.bind(this);
 
+      document.addEventListener(`keydown`, this.boundKeypressHandler);
+      document.addEventListener(`click`, this.boundClickHandler);
+
       // Toggleable content properties
       this.content.setAttribute(`aria-labelledby`, `${this.id}-control-0`);
-      if (this.options.closeOnEsc) {
-        this.content.addEventListener(`keydown`, this.boundKeypressHandler);
-      }
 
       // Button properties
       this.buttons.forEach((button, index) => {
         button.setAttribute(`aria-controls`, this.id);
         button.setAttribute(`id`, `${this.id}-control-${index}`);
-        button.addEventListener(`click`, this.boundClickHandler);
-        button.addEventListener(`keydown`, this.boundKeypressHandler);
       });
 
       if (this.content.getAttribute(`data-toggle-open`)) {
@@ -129,19 +127,20 @@ export default class AccessibleToggle {
    */
   teardown() {
     if (this.active) {
+      document.removeEventListener(`click`, this.boundClickHandler);
+      document.removeEventListener(`keyup`, this.boundKeyupHandler);
+
       // Button properties
       this.buttons.forEach(button => {
         button.removeAttribute(`aria-label`);
         button.removeAttribute(`aria-expanded`);
         button.removeAttribute(`aria-controls`);
         button.removeAttribute(`id`);
-        button.removeEventListener(`click`, this.boundClickHandler);
       });
 
       // Toggleable content properties
       this.content.removeAttribute(`aria-hidden`);
       this.content.removeAttribute(`aria-labelledby`);
-      this.content.removeEventListener(`keyup`, this.boundKeyupHandler);
 
       this.active = false;
     }
@@ -241,35 +240,40 @@ export default class AccessibleToggle {
   }
 
   /**
-   * Handle clicks on the button element
+   * Handle clicks
    *
    * @param  {event}
    * @return {null}
    */
   clickHandler(event) {
-    this.toggle();
-    event.preventDefault();
+    // If the click was on one of the control buttons, toggle visibility
+    if (this.buttons.indexOf(event.target) >= 0) {
+      event.preventDefault();
+      this.toggle();
+    }
   }
 
   /**
-   * Handle keypresses within the content element
+   * Handle keypresses
    *
    * @param  {event}
    * @return {null}
    */
   keypressHandler(event) {
     // Is ESC key?
-    if (this.options.closeOnEsc && event.which === keyCodes.esc) {
+    if (
+      this.options.closeOnEsc &&
+      this.content.getAttribute(`aria-hidden`) !== `true` &&
+      event.which === keyCodes.esc
+    ) {
       event.preventDefault();
       this.hide();
-
       this.buttons[0].focus();
     }
 
     // Tab key?
     if (this.options.trapFocus && event.which === keyCodes.tab) {
-      const focusableChildren = this.getFocusableChildElements();
-      this.trapFocus(focusableChildren, event);
+      this.trapFocus(event);
     }
   }
 
@@ -291,14 +295,14 @@ export default class AccessibleToggle {
   /**
    * Trap tab focus inside the given element
    *
-   * @param {array} focusableChildren
    * @param {Event} event
    */
-  trapFocus(focusableChildren, event) {
+  trapFocus(event) {
+    const focusableChildren = this.getFocusableChildElements();
+
     if (focusableChildren.length > 0) {
-      const focusedItemIndex = focusableChildren.indexOf(
-        document.activeElement
-      );
+      const focusedItemIndex =
+        focusableChildren.indexOf(document.activeElement) || 0;
 
       // If we're on the last focusable item, loop back to the first
       if (
