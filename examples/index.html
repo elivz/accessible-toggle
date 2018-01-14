@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Accessible Toggle Example</title>
+
+  <style>
+    .toggle {}
+
+    .nav {
+      margin-top: 1em;
+      padding: 1em;
+      border: 1px solid gray;
+    }
+
+    .nav[aria-hidden="true"] {
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+  <button class="toggle" data-toggle="navigation">Show Menu</button>
+  <nav class="nav" id="navigation">
+    <a href="#">Link One</a>
+    <a href="#">Link Two</a>
+    <a href="#">Link Three</a>
+  </nav>
+
+  <script src="../dist/accessibleToggle.js"></script>
+  <script>
+    new accessibleToggle(document.getElementById('navigation'), {
+      mediaQuery: '(max-width: 600px)',
+    });
+  </script>
+</body>
+
+</html>
