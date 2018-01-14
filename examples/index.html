@@ -7,21 +7,30 @@
   <title>Accessible Toggle Example</title>
 
   <style>
-    .toggle {}
-
     .nav {
       margin-top: 1em;
       padding: 1em;
       border: 1px solid gray;
     }
 
-    .nav[aria-hidden="true"] {
+    .toggle {
       display: none;
+    }
+
+    @media (max-width: 800px) {
+      .toggle {
+        display: block;
+      }
+
+      .nav[aria-hidden="true"] {
+        display: none;
+      }
     }
   </style>
 </head>
 
 <body>
+  <p>The menu below will be hidden behind a toggle button at window sizes below 800px.</p>
   <button class="toggle" data-toggle="navigation">Show Menu</button>
   <nav class="nav" id="navigation">
     <a href="#">Link One</a>
@@ -32,7 +41,7 @@
   <script src="../dist/accessibleToggle.js"></script>
   <script>
     new accessibleToggle(document.getElementById('navigation'), {
-      mediaQuery: '(max-width: 600px)',
+      mediaQuery: '(max-width: 800px)',
     });
   </script>
 </body>
