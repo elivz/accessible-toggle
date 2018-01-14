@@ -9,6 +9,7 @@ const defaultOptions = {
   trapFocus: true,
   assignFocus: true,
   closeOnEsc: true,
+  closeOnClickOutside: false,
   mediaQuery: false,
   onShow: () => {},
   onHide: () => {},
@@ -163,6 +164,13 @@ export default class AccessibleToggle {
   }
 
   /**
+   * Test if the content panel is currently visible
+   */
+  isOpen() {
+    return this.content.getAttribute(`aria-hidden`) !== `true`;
+  }
+
+  /**
    * Show the content
    *
    * @return {class}  The accessible-toggle class
@@ -227,7 +235,7 @@ export default class AccessibleToggle {
    */
   toggle(display) {
     if (typeof display === `undefined`) {
-      display = this.content.getAttribute(`aria-hidden`) === `true`;
+      display = !this.isOpen();
     }
 
     if (display) {
@@ -250,6 +258,19 @@ export default class AccessibleToggle {
     if (this.buttons.indexOf(event.target) >= 0) {
       event.preventDefault();
       this.toggle();
+      return;
+    }
+
+    // If the content is visible and the user clicks outside
+    // of it, close the content
+    if (
+      this.closeOnClickOutside &&
+      this.isOpen() &&
+      !this.content.contains(event.target)
+    ) {
+      event.preventDefault();
+      this.hide();
+      return;
     }
   }
 
@@ -263,7 +284,7 @@ export default class AccessibleToggle {
     // Is ESC key?
     if (
       this.options.closeOnEsc &&
-      this.content.getAttribute(`aria-hidden`) !== `true` &&
+      this.isOpen() &&
       event.which === keyCodes.esc
     ) {
       event.preventDefault();

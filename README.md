@@ -65,6 +65,11 @@ Set this to true if you want to automatically move focus to the first link or bu
 #### `closeOnEsc`
 
 Allow the user to press the escape key to hide the content. (Default: `true`)
+Set this to true if you want to automatically move focus to the first link or button within the content after is is shown. (Default: `true`)
+
+#### `closeOnClickOutside`
+
+Close the panel when the user clicks on any other element on the page. (Default: `false`)
 
 #### `mediaQuery`
 

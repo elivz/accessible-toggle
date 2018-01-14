@@ -207,6 +207,15 @@ var AccessibleToggle = function () {
   };
 
   /**
+   * Test if the content panel is currently visible
+   */
+
+
+  AccessibleToggle.prototype.isOpen = function isOpen() {
+    return this.content.getAttribute('aria-hidden') !== 'true';
+  };
+
+  /**
    * Show the content
    *
    * @return {class}  The accessible-toggle class
@@ -275,7 +284,7 @@ var AccessibleToggle = function () {
 
   AccessibleToggle.prototype.toggle = function toggle(display) {
     if (typeof display === 'undefined') {
-      display = this.content.getAttribute('aria-hidden') === 'true';
+      display = !this.isOpen();
     }
 
     if (display) {
@@ -300,6 +309,15 @@ var AccessibleToggle = function () {
     if (this.buttons.indexOf(event.target) >= 0) {
       event.preventDefault();
       this.toggle();
+      return;
+    }
+
+    // If the content is visible and the user clicks outside
+    // of it, close the content
+    if (this.isOpen() && !this.content.contains(event.target)) {
+      event.preventDefault();
+      this.hide();
+      return;
     }
   };
 
@@ -313,7 +331,7 @@ var AccessibleToggle = function () {
 
   AccessibleToggle.prototype.keypressHandler = function keypressHandler(event) {
     // Is ESC key?
-    if (this.options.closeOnEsc && this.content.getAttribute('aria-hidden') !== 'true' && event.which === keyCodes.esc) {
+    if (this.options.closeOnEsc && this.isOpen() && event.which === keyCodes.esc) {
       event.preventDefault();
       this.hide();
       this.buttons[0].focus();
