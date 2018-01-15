@@ -264,8 +264,9 @@ export default class AccessibleToggle {
     // If the content is visible and the user clicks outside
     // of it, close the content
     if (
-      this.closeOnClickOutside &&
+      this.options.closeOnClickOutside &&
       this.isOpen() &&
+      this.content !== event.target &&
       !this.content.contains(event.target)
     ) {
       event.preventDefault();

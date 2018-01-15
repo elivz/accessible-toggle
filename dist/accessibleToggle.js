@@ -59,6 +59,7 @@ var defaultOptions = {
   trapFocus: true,
   assignFocus: true,
   closeOnEsc: true,
+  closeOnClickOutside: false,
   mediaQuery: false,
   onShow: function onShow() {},
   onHide: function onHide() {}
@@ -314,7 +315,7 @@ var AccessibleToggle = function () {
 
     // If the content is visible and the user clicks outside
     // of it, close the content
-    if (this.isOpen() && !this.content.contains(event.target)) {
+    if (this.options.closeOnClickOutside && this.isOpen() && !this.content.contains(event.target)) {
       event.preventDefault();
       this.hide();
       return;
