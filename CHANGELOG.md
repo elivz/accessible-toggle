@@ -17,6 +17,7 @@ and this project adheres to
 
 ### Improved
 
+* Prevent elements within the content panel from receiving focus when the panel is hidden
 * Include more potentially-focusable elements when assigning focus
 * Bind event listeners to the document for better handling of edge-cases
 

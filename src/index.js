@@ -66,6 +66,7 @@ export default class AccessibleToggle {
     this.content = element;
     this.id = element.id;
     this.buttons = $$(`[data-toggle='${this.id}']`);
+    this.focusableChildren = this.getFocusableChildElements();
     this.options = Object.assign({}, defaultOptions, options);
 
     if (this.buttons.length < 1) {
@@ -143,6 +144,19 @@ export default class AccessibleToggle {
       this.content.removeAttribute(`aria-hidden`);
       this.content.removeAttribute(`aria-labelledby`);
 
+      // Reset child element tabindexes
+      this.focusableChildren.forEach(element => {
+        if (element.hasAttribute(`data-toggle-tabindex`)) {
+          element.setAttribute(
+            `tabindex`,
+            element.getAttribute(`data-toggle-tabindex`)
+          );
+          element.removeAttribute(`data-toggle-tabindex`);
+        } else {
+          element.removeAttribute(`tabindex`);
+        }
+      });
+
       this.active = false;
     }
   }
@@ -176,16 +190,28 @@ export default class AccessibleToggle {
    * @return {class}  The accessible-toggle class
    */
   show() {
+    // Set ARIA attributes
     this.content.setAttribute(`aria-hidden`, `false`);
     this.buttons.forEach(button => {
       button.setAttribute(`aria-expanded`, `true`);
     });
 
+    // Allow child elements to receive focus
+    this.focusableChildren.forEach(element => {
+      if (element.hasAttribute(`data-toggle-tabindex`)) {
+        element.setAttribute(
+          `tabindex`,
+          element.getAttribute(`data-toggle-tabindex`)
+        );
+      } else {
+        element.removeAttribute(`tabindex`);
+      }
+    });
+
     // Set focus on first focusable item
     if (this.options.assignFocus) {
       const toFocus =
-        this.content.querySelector(`[autofocus]`) ||
-        this.getFocusableChildElements()[0];
+        this.content.querySelector(`[autofocus]`) || this.focusableChildren[0];
 
       if (toFocus) {
         toFocus.focus();
@@ -210,9 +236,20 @@ export default class AccessibleToggle {
    * @return {class}  The accessible-toggle class
    */
   hide() {
+    // Set ARIA attributes
     this.content.setAttribute(`aria-hidden`, `true`);
     this.buttons.forEach(button => {
       button.setAttribute(`aria-expanded`, `false`);
+    });
+
+    // Remove child elements from the tab order
+    this.focusableChildren.forEach(element => {
+      const oldTabIndex = element.getAttribute(`tabindex`);
+      if (oldTabIndex) {
+        element.setAttribute(`data-toggle-tabindex`, oldTabIndex);
+      }
+
+      element.setAttribute(`tabindex`, `-1`);
     });
 
     // Trigger callback
@@ -320,25 +357,23 @@ export default class AccessibleToggle {
    * @param {Event} event
    */
   trapFocus(event) {
-    const focusableChildren = this.getFocusableChildElements();
-
-    if (focusableChildren.length > 0) {
+    if (this.focusableChildren.length > 0) {
       const focusedItemIndex =
-        focusableChildren.indexOf(document.activeElement) || 0;
+        this.focusableChildren.indexOf(document.activeElement) || 0;
 
       // If we're on the last focusable item, loop back to the first
       if (
         !event.shiftKey &&
-        focusedItemIndex === focusableChildren.length - 1
+        focusedItemIndex === this.focusableChildren.length - 1
       ) {
-        focusableChildren[0].focus();
+        this.focusableChildren[0].focus();
         event.preventDefault();
       }
 
       // If we're on the first focusable item and shift-tab
       // (moving backward), wrap to the last item
       if (event.shiftKey && focusedItemIndex === 0) {
-        focusableChildren[focusableChildren.length - 1].focus();
+        this.focusableChildren[this.focusableChildren.length - 1].focus();
         event.preventDefault();
       }
     }
