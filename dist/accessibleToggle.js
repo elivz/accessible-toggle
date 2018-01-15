@@ -154,7 +154,7 @@ var AccessibleToggle = function () {
         button.setAttribute('id', _this.id + '-control-' + index);
       });
 
-      if (this.content.getAttribute('data-toggle-open')) {
+      if (this.content.hasAttribute('data-toggle-open')) {
         this.show();
       } else {
         this.hide();
@@ -315,7 +315,7 @@ var AccessibleToggle = function () {
 
     // If the content is visible and the user clicks outside
     // of it, close the content
-    if (this.options.closeOnClickOutside && this.isOpen() && !this.content.contains(event.target)) {
+    if (this.options.closeOnClickOutside && this.isOpen() && this.content !== event.target && !this.content.contains(event.target)) {
       event.preventDefault();
       this.hide();
       return;

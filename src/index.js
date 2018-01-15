@@ -111,7 +111,7 @@ export default class AccessibleToggle {
         button.setAttribute(`id`, `${this.id}-control-${index}`);
       });
 
-      if (this.content.getAttribute(`data-toggle-open`)) {
+      if (this.content.hasAttribute(`data-toggle-open`)) {
         this.show();
       } else {
         this.hide();
