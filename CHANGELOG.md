@@ -6,6 +6,20 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to
 [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## Unreleased
+
+### Added
+
+* `trapFocus` option to prevent the user from tabbing out of the content panel while it is open
+* `closeOnClickOutside` option to close the panel if the user clicks on any other part of the page
+* Use `data-toggle-open` attribute on content element to make the panel open by default
+* A [simple example page](https://github.com/elivz/accessible-toggle/blob/master/examples/index.html)
+
+### Improved
+
+* Include more potentially-focusable elements when assigning focus
+* Bind event listeners to the document for better handling of edge-cases
+
 ## 1.1.5 - 2017-12-12
 
 ### Fixed
