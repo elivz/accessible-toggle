@@ -2,7 +2,9 @@
 
 // Set up our document body
 document.body.innerHTML = `
-  <button id="button" data-toggle="content"></button>
+  <button id="button" data-toggle="content">
+    <span id="button-child"></span>
+  </button>
   <div id="content">
     <a href="#" id="button2" data-toggle="content"></a>
   </div>`;
@@ -12,6 +14,7 @@ const AccessibleToggle = require(`../src/index`);
 // Store references to the two elements
 const button = document.getElementById(`button`);
 const button2 = document.getElementById(`button2`);
+const buttonChild = document.getElementById(`button-child`);
 const content = document.getElementById(`content`);
 
 // Initialize the toggle script
@@ -29,11 +32,20 @@ test(`control outside of content area toggles aria roles`, () => {
   expect(content.getAttribute(`aria-hidden`)).toEqual(`false`);
 });
 
+test(`child element of button toggles aria roles`, () => {
+  // Click the button
+  buttonChild.dispatchEvent(clickEvent);
+
+  // Check that all the attributes have been set
+  expect(button.getAttribute(`aria-expanded`)).toEqual(`false`);
+  expect(content.getAttribute(`aria-hidden`)).toEqual(`true`);
+});
+
 test(`control inside content area toggles aria roles`, () => {
   // Click the other button
   button2.dispatchEvent(clickEvent);
 
   // Check that all the attributes have been set
-  expect(button.getAttribute(`aria-expanded`)).toEqual(`false`);
-  expect(content.getAttribute(`aria-hidden`)).toEqual(`true`);
+  expect(button.getAttribute(`aria-expanded`)).toEqual(`true`);
+  expect(content.getAttribute(`aria-hidden`)).toEqual(`false`);
 });

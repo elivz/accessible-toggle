@@ -338,11 +338,16 @@ var AccessibleToggle = function () {
 
 
   AccessibleToggle.prototype.clickHandler = function clickHandler(event) {
-    // If the click was on one of the control buttons, toggle visibility
-    if (this.buttons.indexOf(event.target) >= 0) {
-      event.preventDefault();
-      this.toggle();
-      return;
+    // If the click was on one of the control buttons, or a
+    // child element of a control button, toggle visibility
+    var element = event.target;
+    while (element && element.nodeType === 1) {
+      if (this.buttons.indexOf(element) >= 0) {
+        event.preventDefault();
+        this.toggle();
+        return;
+      }
+      element = element.parentNode;
     }
 
     // If the content is visible and the user clicks outside
