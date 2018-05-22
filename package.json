@@ -3,6 +3,9 @@
   "version": "1.2.1",
   "description":
     "Accessible and responsive toggling of an element's visibility",
+  "author": "Eli Van Zoeren (eli@elivz.com)",
+  "license": "MIT",
+  "repository": "elivz/accessible-toggle",
   "main": "cjs/index.js",
   "browser": "dist/accessibleToggle.js",
   "module": "es/index.js",
@@ -15,8 +18,9 @@
     "release": "release-it",
     "lint": "xo --fix",
     "test": "clear && jest",
+    "test:coverage": "jest --coverage ",
     "test:watch": "clear && jest --watch",
-    "lint:test": "npm run lint",
+    "lint:test": "npm run lint && npm run test:coverage",
     "build":
       "clear && npm run lint:test && npm run build:cjs && npm run build:es && npm run build:umd",
     "build:watch":
@@ -33,9 +37,6 @@
       "pre-commit": "npm run lint:test && npm run build:umd && git add dist"
     }
   },
-  "author": "Eli Van Zoeren (eli@elivz.com)",
-  "license": "MIT",
-  "repository": "elivz/accessible-toggle",
   "devDependencies": {
     "babel-cli": "^6.18.0",
     "babel-core": "^6.17.0",
