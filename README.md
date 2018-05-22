@@ -93,6 +93,14 @@ A callback function that will be triggered when the content is hidden. You may a
 
 ### Methods
 
+#### `setup()`
+
+Activate the toggle control. This happens automatically when you run `new accessibleToggle()`, but you can also manually recreate it after running the `destroy()` method.
+
+#### `destroy()`
+
+Deactivate the toggle control, removing all aria attributes and behaviors.
+
 #### `show()`
 
 Show the content programatically.

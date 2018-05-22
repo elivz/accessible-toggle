@@ -6,6 +6,16 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to
 [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 1.3.0
+
+### Added
+
+* `onEnable` and `onDisable` callback options & `toggle-enabled` and `toggle-disabled` events.
+
+### Improved
+
+* Switch to [XO](https://github.com/xojs/xo) for linting, and update code style accordingly.
+
 ## 1.2.1
 
 ### Improved
