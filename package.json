@@ -46,14 +46,14 @@
     "cross-env": "^5.0.1",
     "husky": "^1.0.0-rc.6",
     "jest": "^22.0.0",
-    "release-it": "^6.0.0",
+    "release-it": "^7.0.0",
     "rimraf": "^2.5.4",
-    "rollup": "^0.54.1",
+    "rollup": "^0.59.2",
     "rollup-plugin-babel": "^3.0.1",
-    "rollup-plugin-commonjs": "^8.0.2",
+    "rollup-plugin-commonjs": "^9.0.0",
     "rollup-plugin-filesize": "^1.4.2",
     "rollup-plugin-node-resolve": "^3.0.0",
-    "rollup-plugin-uglify": "^3.0.0",
+    "rollup-plugin-uglify": "^4.0.0",
     "xo": "^0.21.1"
   },
   "dependencies": {
