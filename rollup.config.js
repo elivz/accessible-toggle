@@ -26,7 +26,7 @@ export default {
   plugins,
   output: {
     file: `dist/${name}${isProd ? `.min` : ``}.js`,
-    name: name,
+    name,
     format: `umd`,
   },
 };

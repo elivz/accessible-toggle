@@ -1,48 +1,46 @@
-`use strict`;
-
 // Set up our document body
 document.body.innerHTML = `
   <button id="button" data-toggle="content"></button>
   <div id="content"></div>`;
 
 // Store references to the element
-const content = document.getElementById(`content`);
+const content = document.getElementById('content');
 
-const AccessibleToggle = require(`../src/index`);
+const AccessibleToggle = require('../src');
 
-test(`emits show event`, done => {
+test('emits show event', done => {
   function onShow() {
-    expect(content.getAttribute(`aria-hidden`)).toEqual(`false`);
+    expect(content.getAttribute('aria-hidden')).toEqual('false');
     done();
   }
 
   // Initialize the toggle script
   const toggle = new AccessibleToggle(content);
-  content.addEventListener(`toggle-show`, onShow);
+  content.addEventListener('toggle-show', onShow);
 
   // Show the content
   toggle.show();
 });
 
-test(`emits hide event`, done => {
+test('emits hide event', done => {
   function onHide() {
-    expect(content.getAttribute(`aria-hidden`)).toEqual(`true`);
+    expect(content.getAttribute('aria-hidden')).toEqual('true');
     done();
   }
 
   // Initialize the toggle script
   const toggle = new AccessibleToggle(content);
-  content.addEventListener(`toggle-hide`, onHide);
+  content.addEventListener('toggle-hide', onHide);
 
   // Hide the content
   toggle.hide();
 });
 
-test(`triggers the show callback`, done => {
+test('triggers the show callback', done => {
   // Initialize the toggle script
   const toggle = new AccessibleToggle(content, {
     onShow: () => {
-      expect(content.getAttribute(`aria-hidden`)).toEqual(`false`);
+      expect(content.getAttribute('aria-hidden')).toEqual('false');
       done();
     },
   });
@@ -51,11 +49,11 @@ test(`triggers the show callback`, done => {
   toggle.show();
 });
 
-test(`triggers the hide callback`, done => {
+test('triggers the hide callback', done => {
   // Initialize the toggle script
   const toggle = new AccessibleToggle(content, {
     onHide: () => {
-      expect(content.getAttribute(`aria-hidden`)).toEqual(`true`);
+      expect(content.getAttribute('aria-hidden')).toEqual('true');
       done();
     },
   });

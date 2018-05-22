@@ -79,9 +79,9 @@ var keyCodes = {
 /**
  * Helper that converts the result of querySelectorAll to a plain array
  *
- * @param {string} selector
- * @param {element} context to query
- * @return {array}
+ * @param {string}  selector  CSS string to search for
+ * @param {element} context   Parent to search within
+ * @return {array}            Array of elements
  */
 function $$(selector, context) {
   var elementList = (context || document).querySelectorAll(selector);
@@ -95,7 +95,6 @@ var AccessibleToggle = function () {
    *
    * @param  {Element}  element   The toggleable content element
    * @param  {Object}   options   Configurable options
-   * @return {null}
    */
   function AccessibleToggle(element) {
     var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
@@ -113,7 +112,7 @@ var AccessibleToggle = function () {
     this.focusableChildren = this.getFocusableChildElements();
     this.options = Object.assign({}, defaultOptions, options);
 
-    if (this.buttons.length < 1) {
+    if (this.buttons.length === 0) {
       console.warn('Toggle: there are no buttons that control the toggleable element.');
       return;
     }
@@ -131,8 +130,6 @@ var AccessibleToggle = function () {
 
   /**
    * Adds ARIA roles to all the elements and attaches event handler
-   *
-   * @return {null}
    */
 
 
@@ -167,8 +164,6 @@ var AccessibleToggle = function () {
 
   /**
    * Removes all ARIA roles
-   *
-   * @return {null}
    */
 
 
@@ -205,8 +200,6 @@ var AccessibleToggle = function () {
 
   /**
    * Toggles the script on and off based on a media query
-   *
-   * @return {null}
    */
 
 
@@ -220,6 +213,8 @@ var AccessibleToggle = function () {
 
   /**
    * Test if the content panel is currently visible
+   *
+   * @return {bool}  Whether the panel is visible
    */
 
 
@@ -332,8 +327,7 @@ var AccessibleToggle = function () {
   /**
    * Handle clicks
    *
-   * @param  {event}
-   * @return {null}
+   * @param  {event} event  The click event
    */
 
 
@@ -355,15 +349,13 @@ var AccessibleToggle = function () {
     if (this.options.closeOnClickOutside && this.isOpen() && this.content !== event.target && !this.content.contains(event.target)) {
       event.preventDefault();
       this.hide();
-      return;
     }
   };
 
   /**
    * Handle keypresses
    *
-   * @param  {event}
-   * @return {null}
+   * @param  {event} event  The keypress event
    */
 
 
@@ -384,20 +376,20 @@ var AccessibleToggle = function () {
   /**
    * Get all focusable child elements of the given element
    *
-   * @return {aray}
+   * @return {aray}  Array of focusable elements
    */
 
 
   AccessibleToggle.prototype.getFocusableChildElements = function getFocusableChildElements() {
     return $$(focusable.join(','), this.content).filter(function (child) {
-      return !!(child.offsetWidth || child.offsetHeight || child.getClientRects().length);
+      return Boolean(child.offsetWidth || child.offsetHeight || child.getClientRects().length);
     });
   };
 
   /**
    * Trap tab focus inside the given element
    *
-   * @param {Event} event
+   * @param {Event} event  The focus event
    */
 
 

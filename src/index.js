@@ -20,15 +20,15 @@ const defaultOptions = {
  * (cribbed from https://github.com/edenspiekermann/a11y-dialog)
  */
 const focusable = [
-  `a[href]:not([tabindex^="-"]):not([inert])`,
-  `area[href]:not([tabindex^="-"]):not([inert])`,
-  `input:not([disabled]):not([inert])`,
-  `select:not([disabled]):not([inert])`,
-  `textarea:not([disabled]):not([inert])`,
-  `button:not([disabled]):not([inert])`,
-  `iframe:not([tabindex^="-"]):not([inert])`,
-  `[contenteditable]:not([tabindex^="-"]):not([inert])`,
-  `[tabindex]:not([tabindex^="-"]):not([inert])`,
+  'a[href]:not([tabindex^="-"]):not([inert])',
+  'area[href]:not([tabindex^="-"]):not([inert])',
+  'input:not([disabled]):not([inert])',
+  'select:not([disabled]):not([inert])',
+  'textarea:not([disabled]):not([inert])',
+  'button:not([disabled]):not([inert])',
+  'iframe:not([tabindex^="-"]):not([inert])',
+  '[contenteditable]:not([tabindex^="-"]):not([inert])',
+  '[tabindex]:not([tabindex^="-"]):not([inert])',
 ];
 
 const keyCodes = {
@@ -39,9 +39,9 @@ const keyCodes = {
 /**
  * Helper that converts the result of querySelectorAll to a plain array
  *
- * @param {string} selector
- * @param {element} context to query
- * @return {array}
+ * @param {string}  selector  CSS string to search for
+ * @param {element} context   Parent to search within
+ * @return {array}            Array of elements
  */
 function $$(selector, context) {
   const elementList = (context || document).querySelectorAll(selector);
@@ -55,11 +55,10 @@ export default class AccessibleToggle {
    *
    * @param  {Element}  element   The toggleable content element
    * @param  {Object}   options   Configurable options
-   * @return {null}
    */
   constructor(element, options = {}) {
     if (!element || !(element instanceof HTMLElement)) {
-      console.warn(`Toggle: first parameter must by an HTML element.`);
+      console.warn('Toggle: first parameter must by an HTML element.');
       return;
     }
 
@@ -69,9 +68,9 @@ export default class AccessibleToggle {
     this.focusableChildren = this.getFocusableChildElements();
     this.options = Object.assign({}, defaultOptions, options);
 
-    if (this.buttons.length < 1) {
+    if (this.buttons.length === 0) {
       console.warn(
-        `Toggle: there are no buttons that control the toggleable element.`
+        'Toggle: there are no buttons that control the toggleable element.'
       );
       return;
     }
@@ -84,7 +83,7 @@ export default class AccessibleToggle {
       // Check if it should be setup now, and again every time the window is resized
       this.testMediaQuery();
       window.addEventListener(
-        `resize`,
+        'resize',
         throttle(this.testMediaQuery.bind(this))
       );
     }
@@ -92,24 +91,22 @@ export default class AccessibleToggle {
 
   /**
    * Adds ARIA roles to all the elements and attaches event handler
-   *
-   * @return {null}
    */
   setup() {
     if (!this.active) {
       this.boundClickHandler = this.clickHandler.bind(this);
       this.boundKeypressHandler = this.keypressHandler.bind(this);
 
-      document.addEventListener(`keydown`, this.boundKeypressHandler);
-      document.addEventListener(`click`, this.boundClickHandler);
+      document.addEventListener('keydown', this.boundKeypressHandler);
+      document.addEventListener('click', this.boundClickHandler);
 
       // Toggleable content properties
-      this.content.setAttribute(`aria-labelledby`, `${this.id}-control-0`);
+      this.content.setAttribute('aria-labelledby', `${this.id}-control-0`);
 
       // Button properties
       this.buttons.forEach((button, index) => {
-        button.setAttribute(`aria-controls`, this.id);
-        button.setAttribute(`id`, `${this.id}-control-${index}`);
+        button.setAttribute('aria-controls', this.id);
+        button.setAttribute('id', `${this.id}-control-${index}`);
       });
 
       if (this.content.hasAttribute(`data-toggle-open`)) {
@@ -124,36 +121,34 @@ export default class AccessibleToggle {
 
   /**
    * Removes all ARIA roles
-   *
-   * @return {null}
    */
   teardown() {
     if (this.active) {
-      document.removeEventListener(`click`, this.boundClickHandler);
-      document.removeEventListener(`keyup`, this.boundKeyupHandler);
+      document.removeEventListener('click', this.boundClickHandler);
+      document.removeEventListener('keyup', this.boundKeyupHandler);
 
       // Button properties
       this.buttons.forEach(button => {
-        button.removeAttribute(`aria-label`);
-        button.removeAttribute(`aria-expanded`);
-        button.removeAttribute(`aria-controls`);
-        button.removeAttribute(`id`);
+        button.removeAttribute('aria-label');
+        button.removeAttribute('aria-expanded');
+        button.removeAttribute('aria-controls');
+        button.removeAttribute('id');
       });
 
       // Toggleable content properties
-      this.content.removeAttribute(`aria-hidden`);
-      this.content.removeAttribute(`aria-labelledby`);
+      this.content.removeAttribute('aria-hidden');
+      this.content.removeAttribute('aria-labelledby');
 
       // Reset child element tabindexes
       this.focusableChildren.forEach(element => {
-        if (element.hasAttribute(`data-toggle-tabindex`)) {
+        if (element.hasAttribute('data-toggle-tabindex')) {
           element.setAttribute(
-            `tabindex`,
-            element.getAttribute(`data-toggle-tabindex`)
+            'tabindex',
+            element.getAttribute('data-toggle-tabindex')
           );
-          element.removeAttribute(`data-toggle-tabindex`);
+          element.removeAttribute('data-toggle-tabindex');
         } else {
-          element.removeAttribute(`tabindex`);
+          element.removeAttribute('tabindex');
         }
       });
 
@@ -163,8 +158,6 @@ export default class AccessibleToggle {
 
   /**
    * Toggles the script on and off based on a media query
-   *
-   * @return {null}
    */
   testMediaQuery() {
     if (
@@ -179,9 +172,11 @@ export default class AccessibleToggle {
 
   /**
    * Test if the content panel is currently visible
+   *
+   * @return {bool}  Whether the panel is visible
    */
   isOpen() {
-    return this.content.getAttribute(`aria-hidden`) !== `true`;
+    return this.content.getAttribute('aria-hidden') !== 'true';
   }
 
   /**
@@ -191,27 +186,27 @@ export default class AccessibleToggle {
    */
   show() {
     // Set ARIA attributes
-    this.content.setAttribute(`aria-hidden`, `false`);
+    this.content.setAttribute('aria-hidden', 'false');
     this.buttons.forEach(button => {
-      button.setAttribute(`aria-expanded`, `true`);
+      button.setAttribute('aria-expanded', 'true');
     });
 
     // Allow child elements to receive focus
     this.focusableChildren.forEach(element => {
-      if (element.hasAttribute(`data-toggle-tabindex`)) {
+      if (element.hasAttribute('data-toggle-tabindex')) {
         element.setAttribute(
-          `tabindex`,
-          element.getAttribute(`data-toggle-tabindex`)
+          'tabindex',
+          element.getAttribute('data-toggle-tabindex')
         );
       } else {
-        element.removeAttribute(`tabindex`);
+        element.removeAttribute('tabindex');
       }
     });
 
     // Set focus on first focusable item
     if (this.options.assignFocus) {
       const toFocus =
-        this.content.querySelector(`[autofocus]`) || this.focusableChildren[0];
+        this.content.querySelector('[autofocus]') || this.focusableChildren[0];
 
       if (toFocus) {
         toFocus.focus();
@@ -219,12 +214,12 @@ export default class AccessibleToggle {
     }
 
     // Trigger callback
-    if (typeof this.options.onShow === `function`) {
+    if (typeof this.options.onShow === 'function') {
       this.options.onShow();
     }
 
     // Fire custom event
-    const event = new Event(`toggle-show`);
+    const event = new Event('toggle-show');
     this.content.dispatchEvent(event);
 
     return this;
@@ -237,28 +232,28 @@ export default class AccessibleToggle {
    */
   hide() {
     // Set ARIA attributes
-    this.content.setAttribute(`aria-hidden`, `true`);
+    this.content.setAttribute('aria-hidden', 'true');
     this.buttons.forEach(button => {
-      button.setAttribute(`aria-expanded`, `false`);
+      button.setAttribute('aria-expanded', 'false');
     });
 
     // Remove child elements from the tab order
     this.focusableChildren.forEach(element => {
-      const oldTabIndex = element.getAttribute(`tabindex`);
+      const oldTabIndex = element.getAttribute('tabindex');
       if (oldTabIndex) {
-        element.setAttribute(`data-toggle-tabindex`, oldTabIndex);
+        element.setAttribute('data-toggle-tabindex', oldTabIndex);
       }
 
-      element.setAttribute(`tabindex`, `-1`);
+      element.setAttribute('tabindex', '-1');
     });
 
     // Trigger callback
-    if (typeof this.options.onShow === `function`) {
+    if (typeof this.options.onShow === 'function') {
       this.options.onHide();
     }
 
     // Fire custom event
-    const event = new Event(`toggle-hide`);
+    const event = new Event('toggle-hide');
     this.content.dispatchEvent(event);
 
     return this;
@@ -271,7 +266,7 @@ export default class AccessibleToggle {
    * @return {class}  The accessible-toggle class
    */
   toggle(display) {
-    if (typeof display === `undefined`) {
+    if (typeof display === 'undefined') {
       display = !this.isOpen();
     }
 
@@ -287,8 +282,7 @@ export default class AccessibleToggle {
   /**
    * Handle clicks
    *
-   * @param  {event}
-   * @return {null}
+   * @param  {event} event  The click event
    */
   clickHandler(event) {
     // If the click was on one of the control buttons, or a
@@ -313,15 +307,13 @@ export default class AccessibleToggle {
     ) {
       event.preventDefault();
       this.hide();
-      return;
     }
   }
 
   /**
    * Handle keypresses
    *
-   * @param  {event}
-   * @return {null}
+   * @param  {event} event  The keypress event
    */
   keypressHandler(event) {
     // Is ESC key?
@@ -344,14 +336,12 @@ export default class AccessibleToggle {
   /**
    * Get all focusable child elements of the given element
    *
-   * @return {aray}
+   * @return {aray}  Array of focusable elements
    */
   getFocusableChildElements() {
-    return $$(focusable.join(`,`), this.content).filter(child => {
-      return !!(
-        child.offsetWidth ||
-        child.offsetHeight ||
-        child.getClientRects().length
+    return $$(focusable.join(','), this.content).filter(child => {
+      return Boolean(
+        child.offsetWidth || child.offsetHeight || child.getClientRects().length
       );
     });
   }
@@ -359,7 +349,7 @@ export default class AccessibleToggle {
   /**
    * Trap tab focus inside the given element
    *
-   * @param {Event} event
+   * @param {Event} event  The focus event
    */
   trapFocus(event) {
     if (this.focusableChildren.length > 0) {
