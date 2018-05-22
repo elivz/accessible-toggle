@@ -36,6 +36,30 @@ test('emits hide event', done => {
   toggle.hide();
 });
 
+test('triggers the enable callback', done => {
+  // Initialize the toggle script
+  // eslint-disable-next-line no-new
+  new AccessibleToggle(content, {
+    onEnable: () => {
+      expect(content.hasAttribute('aria-hidden')).toEqual(true);
+      done();
+    },
+  });
+});
+
+test('triggers the disable callback', done => {
+  // Initialize the toggle script
+  const toggle = new AccessibleToggle(content, {
+    onDisable: () => {
+      expect(content.hasAttribute('aria-hidden')).toEqual(false);
+      done();
+    },
+  });
+
+  // Hide the content
+  toggle.destroy();
+});
+
 test('triggers the show callback', done => {
   // Initialize the toggle script
   const toggle = new AccessibleToggle(content, {

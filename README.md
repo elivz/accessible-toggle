@@ -75,6 +75,14 @@ Close the panel when the user clicks on any other element on the page. (Default:
 
 If you set a media query (using [standard CSS syntax](https://developer.mozilla.org/en-US/docs/Web/CSS/Media_Queries/Using_media_queries)) the script will be enabled or disabled automatically depending on whether the query matches or not. This is most useful for elements that should be toggleable at certain screen sizes but always visible at others. (Default: none)
 
+#### `onEnable`
+
+A callback that is triggered every time the toggle becomes enabled. You may alternately register an event listener for this purpose – see below. (Default: none)
+
+#### `onDisable`
+
+A callback that is triggered every time the toggle becomes disabled. You may alternately register an event listener for this purpose – see below. (Default: none)
+
 #### `onShow`
 
 A callback function that will be triggered when the content is displayed. You may alternately register an event listener for this purpose – see below. (Default: none)
@@ -113,6 +121,14 @@ toggle.toggle();
 ### Events
 
 You may listen for the following custom events on the content element.
+
+#### `toggle-enable`
+
+Triggered when the toggle is set up, including when it is recreated due to a breakpoint becoming active.
+
+#### `toggle-disable`
+
+Triggered when the toggle becomes inactive, including when it is disabled due to a breakpoint becoming inactive.
 
 #### `toggle-show`
 

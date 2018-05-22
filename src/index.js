@@ -13,6 +13,8 @@ const defaultOptions = {
   mediaQuery: false,
   onShow: () => {},
   onHide: () => {},
+  onEnable: () => {},
+  onDisable: () => {},
 };
 
 /**
@@ -67,6 +69,7 @@ export default class AccessibleToggle {
     this.buttons = $$(`[data-toggle='${this.id}']`);
     this.focusableChildren = this.getFocusableChildElements();
     this.options = Object.assign({}, defaultOptions, options);
+    this.throttledMediaQueryTest = throttle(this.testMediaQuery.bind(this));
 
     if (this.buttons.length === 0) {
       console.warn(
@@ -75,24 +78,36 @@ export default class AccessibleToggle {
       return;
     }
 
+    this.setup();
+  }
+
+  /**
+   * Add event listeners and mount the control
+   */
+  setup() {
     // Start things off
     if (this.options.mediaQuery === false) {
       // No media query – go ahead and run everything as normal
-      this.setup();
+      this.enable();
     } else {
       // Check if it should be setup now, and again every time the window is resized
       this.testMediaQuery();
-      window.addEventListener(
-        'resize',
-        throttle(this.testMediaQuery.bind(this))
-      );
+      window.addEventListener('resize', this.throttledMediaQueryTest);
     }
+  }
+
+  /**
+   * Remove event listeners and disable the component
+   */
+  destroy() {
+    window.removeEventListener('resize', this.throttledMediaQueryTest);
+    this.disable();
   }
 
   /**
    * Adds ARIA roles to all the elements and attaches event handler
    */
-  setup() {
+  enable() {
     if (!this.active) {
       this.boundClickHandler = this.clickHandler.bind(this);
       this.boundKeypressHandler = this.keypressHandler.bind(this);
@@ -114,15 +129,24 @@ export default class AccessibleToggle {
       } else {
         this.hide();
       }
-    }
 
-    this.active = true;
+      // Trigger callback
+      if (typeof this.options.onEnable === 'function') {
+        this.options.onEnable();
+      }
+
+      // Fire custom event
+      const event = new Event('toggle-enable');
+      this.content.dispatchEvent(event);
+
+      this.active = true;
+    }
   }
 
   /**
    * Removes all ARIA roles
    */
-  teardown() {
+  disable() {
     if (this.active) {
       document.removeEventListener('click', this.boundClickHandler);
       document.removeEventListener('keyup', this.boundKeyupHandler);
@@ -152,6 +176,15 @@ export default class AccessibleToggle {
         }
       });
 
+      // Trigger callback
+      if (typeof this.options.onDisable === 'function') {
+        this.options.onDisable();
+      }
+
+      // Fire custom event
+      const event = new Event('toggle-disable');
+      this.content.dispatchEvent(event);
+
       this.active = false;
     }
   }
@@ -164,9 +197,9 @@ export default class AccessibleToggle {
       this.options.mediaQuery &&
       window.matchMedia(this.options.mediaQuery).matches
     ) {
-      this.setup();
+      this.enable();
     } else {
-      this.teardown();
+      this.disable();
     }
   }
 

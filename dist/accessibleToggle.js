@@ -62,7 +62,9 @@ var defaultOptions = {
   closeOnClickOutside: false,
   mediaQuery: false,
   onShow: function onShow() {},
-  onHide: function onHide() {}
+  onHide: function onHide() {},
+  onEnable: function onEnable() {},
+  onDisable: function onDisable() {}
 };
 
 /**
@@ -111,29 +113,49 @@ var AccessibleToggle = function () {
     this.buttons = $$('[data-toggle=\'' + this.id + '\']');
     this.focusableChildren = this.getFocusableChildElements();
     this.options = Object.assign({}, defaultOptions, options);
+    this.throttledMediaQueryTest = throttle(this.testMediaQuery.bind(this));
 
     if (this.buttons.length === 0) {
       console.warn('Toggle: there are no buttons that control the toggleable element.');
       return;
     }
 
+    this.setup();
+  }
+
+  /**
+   * Add event listeners and mount the control
+   */
+
+
+  AccessibleToggle.prototype.setup = function setup() {
     // Start things off
     if (this.options.mediaQuery === false) {
       // No media query – go ahead and run everything as normal
-      this.setup();
+      this.enable();
     } else {
       // Check if it should be setup now, and again every time the window is resized
       this.testMediaQuery();
-      window.addEventListener('resize', throttle(this.testMediaQuery.bind(this)));
+      window.addEventListener('resize', this.throttledMediaQueryTest);
     }
-  }
+  };
+
+  /**
+   * Remove event listeners and disable the component
+   */
+
+
+  AccessibleToggle.prototype.destroy = function destroy() {
+    window.removeEventListener('resize', this.throttledMediaQueryTest);
+    this.disable();
+  };
 
   /**
    * Adds ARIA roles to all the elements and attaches event handler
    */
 
 
-  AccessibleToggle.prototype.setup = function setup() {
+  AccessibleToggle.prototype.enable = function enable() {
     var _this = this;
 
     if (!this.active) {
@@ -157,9 +179,18 @@ var AccessibleToggle = function () {
       } else {
         this.hide();
       }
-    }
 
-    this.active = true;
+      // Trigger callback
+      if (typeof this.options.onEnable === 'function') {
+        this.options.onEnable();
+      }
+
+      // Fire custom event
+      var event = new Event('toggle-enable');
+      this.content.dispatchEvent(event);
+
+      this.active = true;
+    }
   };
 
   /**
@@ -167,7 +198,7 @@ var AccessibleToggle = function () {
    */
 
 
-  AccessibleToggle.prototype.teardown = function teardown() {
+  AccessibleToggle.prototype.disable = function disable() {
     if (this.active) {
       document.removeEventListener('click', this.boundClickHandler);
       document.removeEventListener('keyup', this.boundKeyupHandler);
@@ -194,6 +225,15 @@ var AccessibleToggle = function () {
         }
       });
 
+      // Trigger callback
+      if (typeof this.options.onDisable === 'function') {
+        this.options.onDisable();
+      }
+
+      // Fire custom event
+      var event = new Event('toggle-disable');
+      this.content.dispatchEvent(event);
+
       this.active = false;
     }
   };
@@ -205,9 +245,9 @@ var AccessibleToggle = function () {
 
   AccessibleToggle.prototype.testMediaQuery = function testMediaQuery() {
     if (this.options.mediaQuery && window.matchMedia(this.options.mediaQuery).matches) {
-      this.setup();
+      this.enable();
     } else {
-      this.teardown();
+      this.disable();
     }
   };
 
