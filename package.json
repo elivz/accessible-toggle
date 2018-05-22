@@ -1,8 +1,7 @@
 {
   "name": "accessible-toggle",
-  "version": "1.2.1",
-  "description":
-    "Accessible and responsive toggling of an element's visibility",
+  "version": "1.3.0",
+  "description": "Accessible and responsive toggling of an element's visibility",
   "author": "Eli Van Zoeren (eli@elivz.com)",
   "license": "MIT",
   "repository": "elivz/accessible-toggle",
@@ -10,7 +9,12 @@
   "browser": "dist/accessibleToggle.js",
   "module": "es/index.js",
   "jsxnext:main": "es/index.js",
-  "files": ["dist", "cjs", "es", "src"],
+  "files": [
+    "dist",
+    "cjs",
+    "es",
+    "src"
+  ],
   "engines": {
     "node": ">=6.0.0"
   },
@@ -21,15 +25,11 @@
     "test:coverage": "jest --coverage ",
     "test:watch": "clear && jest --watch",
     "lint:test": "npm run lint && npm run test:coverage",
-    "build":
-      "clear && npm run lint:test && npm run build:cjs && npm run build:es && npm run build:umd",
-    "build:watch":
-      "clear && rimraf cjs && cross-env BABEL_ENV=cjs babel -w src --out-dir cjs",
+    "build": "clear && npm run lint:test && npm run build:cjs && npm run build:es && npm run build:umd",
+    "build:watch": "clear && rimraf cjs && cross-env BABEL_ENV=cjs babel -w src --out-dir cjs",
     "build:es": "rimraf es && cross-env BABEL_ENV=es babel src --out-dir es",
-    "build:cjs":
-      "rimraf cjs && cross-env BABEL_ENV=cjs babel src --out-dir cjs",
-    "build:umd":
-      "rimraf dist && cross-env BABEL_ENV=es rollup -c & cross-env BABEL_ENV=es NODE_ENV=production rollup -c"
+    "build:cjs": "rimraf cjs && cross-env BABEL_ENV=cjs babel src --out-dir cjs",
+    "build:umd": "rimraf dist && cross-env BABEL_ENV=es rollup -c & cross-env BABEL_ENV=es NODE_ENV=production rollup -c"
   },
   "husky": {
     "hooks": {
@@ -62,13 +62,26 @@
   "xo": {
     "space": true,
     "prettier": true,
-    "env": ["browser"],
-    "ignores": ["cjs", "dist", "es"],
+    "env": [
+      "browser"
+    ],
+    "ignores": [
+      "cjs",
+      "dist",
+      "es"
+    ],
     "overrides": [
       {
         "files": "__tests__/*.js",
-        "env": ["browser", "node"],
-        "globals": ["test", "expect", "document"]
+        "env": [
+          "browser",
+          "node"
+        ],
+        "globals": [
+          "test",
+          "expect",
+          "document"
+        ]
       }
     ]
   },
