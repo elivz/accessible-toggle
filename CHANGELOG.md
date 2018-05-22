@@ -10,6 +10,7 @@ and this project adheres to
 
 ### Added
 
+* `setup` and `destroy` methods.
 * `onEnable` and `onDisable` callback options & `toggle-enabled` and `toggle-disabled` events.
 
 ### Improved
