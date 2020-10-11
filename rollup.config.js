@@ -21,7 +21,7 @@ const plugins = [
 const isProd = process.env.NODE_ENV === `production`;
 if (isProd) plugins.push(uglify());
 
-export default {
+const config = {
   input: `src/index.js`,
   plugins,
   output: {
@@ -30,3 +30,5 @@ export default {
     format: `umd`,
   },
 };
+
+export default config;

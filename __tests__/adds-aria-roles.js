@@ -7,8 +7,8 @@ test('adds aria roles', () => {
   const AccessibleToggle = require('../src');
 
   // Store references to the two elements
-  const button = document.getElementById('button');
-  const content = document.getElementById('content');
+  const button = document.querySelector('#button');
+  const content = document.querySelector('#content');
 
   // Initialize the toggle script
   // eslint-disable-next-line no-new

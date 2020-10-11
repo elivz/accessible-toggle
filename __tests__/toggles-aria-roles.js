@@ -10,10 +10,10 @@ document.body.innerHTML = `
 const AccessibleToggle = require('../src');
 
 // Store references to the two elements
-const button = document.getElementById('button');
-const button2 = document.getElementById('button2');
-const buttonChild = document.getElementById('button-child');
-const content = document.getElementById('content');
+const button = document.querySelector('#button');
+const button2 = document.querySelector('#button2');
+const buttonChild = document.querySelector('#button-child');
+const content = document.querySelector('#content');
 
 // Initialize the toggle script
 // eslint-disable-next-line no-new

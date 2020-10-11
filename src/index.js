@@ -152,7 +152,7 @@ export default class AccessibleToggle {
       document.removeEventListener('keyup', this.boundKeyupHandler);
 
       // Button properties
-      this.buttons.forEach(button => {
+      this.buttons.forEach((button) => {
         button.removeAttribute('aria-label');
         button.removeAttribute('aria-expanded');
         button.removeAttribute('aria-controls');
@@ -164,7 +164,7 @@ export default class AccessibleToggle {
       this.content.removeAttribute('aria-labelledby');
 
       // Reset child element tabindexes
-      this.focusableChildren.forEach(element => {
+      this.focusableChildren.forEach((element) => {
         if (element.hasAttribute('data-toggle-tabindex')) {
           element.setAttribute(
             'tabindex',
@@ -220,12 +220,12 @@ export default class AccessibleToggle {
   show() {
     // Set ARIA attributes
     this.content.setAttribute('aria-hidden', 'false');
-    this.buttons.forEach(button => {
+    this.buttons.forEach((button) => {
       button.setAttribute('aria-expanded', 'true');
     });
 
     // Allow child elements to receive focus
-    this.focusableChildren.forEach(element => {
+    this.focusableChildren.forEach((element) => {
       if (element.hasAttribute('data-toggle-tabindex')) {
         element.setAttribute(
           'tabindex',
@@ -266,15 +266,15 @@ export default class AccessibleToggle {
   hide() {
     // Set ARIA attributes
     this.content.setAttribute('aria-hidden', 'true');
-    this.buttons.forEach(button => {
+    this.buttons.forEach((button) => {
       button.setAttribute('aria-expanded', 'false');
     });
 
     // Remove child elements from the tab order
-    this.focusableChildren.forEach(element => {
+    this.focusableChildren.forEach((element) => {
       const oldTabIndex = element.getAttribute('tabindex');
       if (oldTabIndex) {
-        element.setAttribute('data-toggle-tabindex', oldTabIndex);
+        element.dataset.toggleTabindex = oldTabIndex;
       }
 
       element.setAttribute('tabindex', '-1');
@@ -322,11 +322,12 @@ export default class AccessibleToggle {
     // child element of a control button, toggle visibility
     let element = event.target;
     while (element && element.nodeType === 1) {
-      if (this.buttons.indexOf(element) >= 0) {
+      if (this.buttons.includes(element)) {
         event.preventDefault();
         this.toggle();
         return;
       }
+
       element = element.parentNode;
     }
 
@@ -372,7 +373,7 @@ export default class AccessibleToggle {
    * @return {aray}  Array of focusable elements
    */
   getFocusableChildElements() {
-    return $$(focusable.join(','), this.content).filter(child => {
+    return $$(focusable.join(','), this.content).filter((child) => {
       return Boolean(
         child.offsetWidth || child.offsetHeight || child.getClientRects().length
       );

@@ -11,10 +11,10 @@ document.body.innerHTML = `
 const AccessibleToggle = require('../src');
 
 // Store references to the two elements
-const button = document.getElementById('button');
-const content = document.getElementById('content');
-const insideControl = document.getElementById('inside-control');
-const outsideControl = document.getElementById('outside-control');
+const button = document.querySelector('#button');
+const content = document.querySelector('#content');
+const insideControl = document.querySelector('#inside-control');
+const outsideControl = document.querySelector('#outside-control');
 
 // Initialize the toggle script
 // eslint-disable-next-line no-new

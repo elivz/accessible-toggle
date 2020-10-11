@@ -6,7 +6,7 @@ document.body.innerHTML = `
 const AccessibleToggle = require('../src');
 
 // Store references to the two elements
-const content = document.getElementById('content');
+const content = document.querySelector('#content');
 
 // Initialize the toggle script
 const toggle = new AccessibleToggle(content);

@@ -2,7 +2,7 @@
   "env": {
     "test": {
       "presets": [
-        ["es2015", {"loose": true}]
+        ["@babel/preset-env", {"loose": true}]
       ],
       "plugins": [
         ["add-module-exports"]
@@ -10,7 +10,7 @@
     },
     "cjs": {
       "presets": [
-        ["es2015", {"loose": true}]
+        ["@babel/preset-env", {"loose": true}]
       ],
       "plugins": [
         ["add-module-exports"]
@@ -18,7 +18,7 @@
     },
     "es": {
       "presets": [
-        ["es2015", {"loose": true, "modules": false}]
+        ["@babel/preset-env", {"loose": true, "modules": false}]
       ]
     }
   }

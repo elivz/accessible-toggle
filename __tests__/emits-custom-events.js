@@ -4,11 +4,11 @@ document.body.innerHTML = `
   <div id="content"></div>`;
 
 // Store references to the element
-const content = document.getElementById('content');
+const content = document.querySelector('#content');
 
 const AccessibleToggle = require('../src');
 
-test('emits show event', done => {
+test('emits show event', (done) => {
   function onShow() {
     expect(content.getAttribute('aria-hidden')).toEqual('false');
     done();
@@ -22,7 +22,7 @@ test('emits show event', done => {
   toggle.show();
 });
 
-test('emits hide event', done => {
+test('emits hide event', (done) => {
   function onHide() {
     expect(content.getAttribute('aria-hidden')).toEqual('true');
     done();
@@ -36,7 +36,7 @@ test('emits hide event', done => {
   toggle.hide();
 });
 
-test('triggers the enable callback', done => {
+test('triggers the enable callback', (done) => {
   // Initialize the toggle script
   // eslint-disable-next-line no-new
   new AccessibleToggle(content, {
@@ -47,7 +47,7 @@ test('triggers the enable callback', done => {
   });
 });
 
-test('triggers the disable callback', done => {
+test('triggers the disable callback', (done) => {
   // Initialize the toggle script
   const toggle = new AccessibleToggle(content, {
     onDisable: () => {
@@ -60,7 +60,7 @@ test('triggers the disable callback', done => {
   toggle.destroy();
 });
 
-test('triggers the show callback', done => {
+test('triggers the show callback', (done) => {
   // Initialize the toggle script
   const toggle = new AccessibleToggle(content, {
     onShow: () => {
@@ -73,7 +73,7 @@ test('triggers the show callback', done => {
   toggle.show();
 });
 
-test('triggers the hide callback', done => {
+test('triggers the hide callback', (done) => {
   // Initialize the toggle script
   const toggle = new AccessibleToggle(content, {
     onHide: () => {
