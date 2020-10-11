@@ -7,3 +7,4 @@ coverage
 *.code-workspace
 *.sublime-workspace
 *.sublime-project
+.idea
